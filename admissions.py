@@ -4,16 +4,18 @@ data_frames = pd.read_csv('Admission_Predict_Ver1.1.csv')
 
 #print(data_frames)
 
-X_df = data_frames[['GRE_Score','TOEFL_Score','University_Rating','SOP' ,'LOR', 'CGPA','Research', 'Chance']] #colunas do dataset
+X_df = data_frames[['GRE_Score','TOEFL_Score','University_Rating','SOP' ,'LOR', 'CGPA','Research']] #colunas do dataset
 Y_df = data_frames.Chance #vai ser a coluna que vai classificar os dados
 
 Y = list()
 
 for i, value in enumerate(Y_df):
-    if ( Y_df[i] >= 0.8): #Separa entre os que tem mais chances dos que tem menos chances
+    if ( Y_df[i] >= 0.8): #classificados
+        Y.append(2)
+    elif (Y_df[i] >= 0.5): #classificáveis
         Y.append(1)
     else:
-        Y.append(0)
+        Y.append(0) #não classificados
 
 Xdummies_df = pd.get_dummies(X_df)
 
@@ -21,7 +23,7 @@ X =  Xdummies_df.values         #Devolve os Dummies em Arrays
 
 #codigo para efetuar o treino e teste
 from sklearn.model_selection import train_test_split
-treino_dados, teste_dados, treino_marcacoes, teste_marcacoes = train_test_split(X, Y, test_size=0.1) #os dados de treino são 20% do dataset
+treino_dados, teste_dados, treino_marcacoes, teste_marcacoes = train_test_split(X, Y, test_size=0.2) #os dados de treino são 20% do dataset
 
 #print( treino_dados )
 #print( treino_marcacoes )
